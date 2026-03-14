@@ -15,7 +15,7 @@
 #define PORT 8080
 
 /*
-Added struct for client_data
+Added struct for client_data. 
 */
 typedef struct {
     SOCKET socket;
@@ -41,8 +41,9 @@ void handle_client(SOCKET client_socket, int client_id) {
 #endif
 }
 /*
-Added function for creating threads
-
+Added function for creating threads. This function was made so that
+the parameters for pthread_create could be fulfilled while still being able to
+run the handle_client function.
 */
 void* thread_function(void* arg) {
     client_data* data = (client_data*)arg;
@@ -81,6 +82,11 @@ int main() {
             client_count++;
             // This is the sequential bottleneck:
             // handle_client(client_socket, client_count);
+
+            /*
+            Construction of the client's data is done here before being 
+            passed into pthread_create's function parameters.
+            */
 
             client_data* data = malloc(sizeof(client_data));
             data->socket = client_socket;
